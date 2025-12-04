@@ -1,0 +1,21 @@
+.yellow-title::before {
+    background: #f5c518;
+    border-radius: 5px;
+    content: "";
+    align-self: flex-start;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 4px;
+}
+
+.prime-video::before{
+    position: absolute;
+    width: 100%;
+    content: "";
+    height: 2px;
+    background-color: rgb(0, 157, 255);
+    bottom: 0;
+    left: 0;
+}
