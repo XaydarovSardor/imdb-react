@@ -1,14 +1,11 @@
 import { images } from '../assets/images'
+import { Title } from './Title'
 
 export const PopularActors = () => {
     return (
         <div className="text-white py-10 container">
 
-            <a href="#" className="flex inline-flex items-center text-white relative gap-2 hover:text-yellow transition-all ease-in delay-30">
-                <span className="yellow-title"></span>
-                <p className="text-2xl font-bold">Most popular celebrities</p>
-                <span className="text-3xl">›</span>
-            </a>
+            <Title title={"Most popular celebrities"} color={"white"}/>
             <h3 className="mb-3 uppercase text-yellow mt-3 font-semibold text-xs">Top rising</h3>
 
             <div className="relative">

@@ -1,3 +1,5 @@
+import { Title } from "./Title";
+
 export const Genres = () => {
     const genres = [
         {
@@ -25,12 +27,8 @@ export const Genres = () => {
     return (
         <>
             <div className="container">
-                <a href="#" className="flex items-center text-white relative gap-2 mb-3 hover:text-yellow transition-all ease-in delay-30">
-                    <span className="yellow-title"></span>
-                    <p className="text-2xl font-bold">Popular interests</p>
-                    <span className="text-3xl">›</span>
-                </a>
-                <div className="flex justify-between">
+                <Title title={"Popular interests"}/>
+                <div className="flex justify-between mt-3">
                     {genres.map((genre, index) => (
                         <div
                             key={index} className="relative w-64 h-40 rounded-xl overflow-hidden max-w-72 w-full bg-gray-900 flex-shrink-0">

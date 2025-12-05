@@ -1,12 +1,10 @@
+import { Title } from "./Title"
+
 export const WatchList = () => {
     return (
         <div className="container text-white py-16">
 
-            <a href="#" className="flex items-center relative gap-2 mb-10 hover:text-yellow transition-all ease-in delay-30">
-                <span className="yellow-title"></span>
-                <p className="text-2xl font-bold">From your Watchlist</p>
-                <span className="text-3xl">›</span>
-            </a>
+            <Title title={"From your Watchlist"} color={"white"}/>
 
             <div className="flex flex-col items-center text-center mt-20 mb-10">
 

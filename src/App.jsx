@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import { Footer, Header } from "./layout"
-import { Home } from "./pages"
-import { Top250Movies } from "./pages/Top250Movies"
+import { Home, Top250Movies } from "./pages"
+import { SingleMovie } from "./components"
 
 
 function App() {
@@ -12,6 +12,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home/>}/>
       <Route path="/top250Movies" element={<Top250Movies/>}/>
+      <Route path="/:id" element={<SingleMovie/>}/>
     </Routes>
     <Footer/>
     </div>
