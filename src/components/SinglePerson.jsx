@@ -1,24 +1,43 @@
+import { useEffect, useState } from "react"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { getSingleCast } from "../api"
+
 export const SinglePerson = () => {
+    const { id } = useParams()
+    const navigate = useNavigate()
+    const [cast, setCast] = useState()
+    const [loading, setLoading] = useState(true)
+    useEffect(() => {
+        const singleCastFunc = async () => {
+            try {
+                const request = await getSingleCast(id)
+                setCast(request)
+                setLoading(false)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        singleCastFunc()
+    }, [id])
+    const backBtn = () => {
+        navigate(-1)
+    }
     return (
         <div className="bg-[#121212] text-white">
-
+            {loading && <h2 className="text-red-400 font-semibold">Loading...</h2>}
             <div className="max-w-7xl mx-auto px-6 py-10">
                 <button onClick={backBtn} className="px-8 py-2 mb-3 bg-yellow rounded-lg">Back</button>
 
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-1">
-                        <h1 className="text-4xl font-semibold">{movie.primaryTitle}</h1>
-                        <div className="text-gray-400 text-sm">{movie.releaseDate} • {movie.runtimeMinutes} minutes</div>
+                        <h1 className="text-4xl font-semibold">{cast?.name}</h1>
+                        <div className="text-gray-400 text-sm">{cast?.birthName}</div>
                     </div>
-                    <div className="flex flex-col gap-2 justify-center">
-                        <h3 className="text-gray-500 text-sm font-semibold uppercase">Imdb rating</h3>
-                        <span className="bg-yellow-400 text-gray-400 font-semibold rounded-md text-sm flex items-center">
-                            <svg className="w-4 text-yellow h-4 mr-1" viewBox="0 0 24 24" fill="none">
-                                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.786 1.4 8.168L12 18.896 4.666 23.164l1.4-8.168L.132 9.21l8.2-1.192L12 .587z" fill="currentColor" />
-                            </svg>
-                            {movie.averageRating}/10
-                        </span>
-                        <span className="text-gray-400 font-semibold text-sm">{movie.numVotes} votes</span>
+                    <h3 className="text-gray-500 text-sm font-semibold uppercase">Professions</h3>
+                    <div className="flex gap-2 gap-2 justify-center">
+                        {cast?.primaryProfessions.map((prof,index) => (
+                            <span key={index} className="bg-yellow-400 text-gray-400 font-semibold rounded-md text-sm flex items-center">{prof}</span>
+                        ))}
                     </div>
                 </div>
 
@@ -27,7 +46,7 @@ export const SinglePerson = () => {
                     <div className="col-span-3 h-[300px]">
                         <div className="relative h-full">
                             <img
-                                src={movie.primaryImage}
+                                src={cast?.primaryImage}
                                 className="rounded-xl h-full w-full shadow-lg"
                             />
                             <button className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center border border-gray-600">
@@ -39,7 +58,7 @@ export const SinglePerson = () => {
                     <div className="col-span-6 h-[300px]">
                         <div className="rounded-xl relative overflow-hidden border border-gray-700">
                             <div className="rounded-xl overflow-hidden border border-gray-700 h-[300px]">
-                                <img className="w-full h-full" src={movie.thumbnails[0].url} alt="thumbnail" />
+                                <img className="w-full h-full" src={cast?.thumbnails?.[1]?.url} alt="thumbnail" />
                             </div>
 
                             <button className="absolute bottom-4 left-6 bg-black/60 px-4 py-2 rounded-full flex items-center gap-2">
@@ -72,57 +91,7 @@ export const SinglePerson = () => {
                     </div>
 
                 </div>
-
-                <div className="flex flex-wrap gap-3 mt-8">
-                    {movie.genres && (movie.genres.map((genre, index) => (
-                        <span
-                            key={index}
-                            className="bg-transparent border border-solid border-white rounded-full px-4 py-1 text-sm cursor-pointer hover:bg-gray-700"
-                        >
-                            {genre}
-                        </span>
-                    )))}
-                </div>
-
-
-                {movie.description && (<p className="mt-6 text-lg text-gray-300 max-w-4xl leading-relaxed">{movie.description}</p>)}
-                <div className="mt-8 space-y-4">
-                    <div>
-                        <h3 className="text-gray-400 text-lg">Directors</h3>
-                        <div className="flex gap-3 mt-1">
-                            {movie.directors && (movie.directors.map(director => (
-                                <div key={director.id} className="flex gap-3 mt-1">
-                                    <Link className="text-blue-400 hover:underline">{director.fullName}</Link>
-                                </div>
-                            )))}
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 className="text-gray-400 text-lg">Writers</h3>
-                        <div className="flex gap-3 mt-1">
-                            {movie.writers && (movie.writers.map(writer => (
-                                <div key={writer.id} className="flex gap-3 mt-1">
-                                    <Link className="text-blue-400 hover:underline">{writer.fullName}</Link>
-                                </div>
-                            )))}
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 className="text-gray-400 text-lg">Stars</h3>
-                        <div className="flex gap-3 mt-1">
-                            {movie.cast && (movie.cast.slice(0, 3).map(star => (
-                                <div key={star.id} className="flex gap-3 mt-1">
-                                    <Link className="text-blue-400 hover:underline">{star.fullName}</Link>
-                                </div>
-                            )))}
-                        </div>
-                    </div>
-                </div>
-
-
-
+                {cast?.biography && (<p className="mt-6 text-lg text-gray-300 max-w-4xl leading-relaxed">{cast?.biography}</p>)}
             </div>
         </div>
     )
