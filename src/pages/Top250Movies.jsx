@@ -1,6 +1,7 @@
 import { Eye, Info, Star } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { getAllMovies } from '../api'
+import { Link } from 'react-router-dom'
 export const Top250Movies = () => {
     const [movies, setMovies] = useState([])
     useEffect(() => {
@@ -37,7 +38,7 @@ export const Top250Movies = () => {
 
                 {/* card section */}
                 {movies && movies.length > 0 ? movies.map((movie, index) => (
-                    <div key={movie.id} className='flex bg-[#FAFAFA] rounded-lg overflow-hidden flex-col'>
+                    <Link to={`/${movie.id}`} key={movie.id} className='flex bg-[#FAFAFA] rounded-lg overflow-hidden flex-col'>
 
                         <div className="space-y-4">
                             <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-lg shadow-sm">
@@ -84,7 +85,7 @@ export const Top250Movies = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 )) : <h2>Moviest not found</h2>}
             </div>
         </div>
