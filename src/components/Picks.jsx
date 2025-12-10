@@ -6,11 +6,8 @@ import { Navigation } from "swiper/modules";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Link } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
 export const Picks = () => {
     const [movies, setMovies] = useState([])
-    const [selectedMovie, setSelectedMovie] = useState(null);
-    const [infoModal, setInfoModal] = useState(false)
     useEffect(() => {
         const getMovies = async () => {
             try {
@@ -32,7 +29,7 @@ export const Picks = () => {
                         <span>›</span>
                     </a>
                 </div>
-                <Title title={"Top picks"} subtitle={"TV shows and movies just for you"} color={"white"} />
+                <Title title={"Top picks"} subtitle={"TV shows and movies just for you"} color={"white"} href={"picks"}/>
                 <Swiper slidesPerView={6}
                     spaceBetween={30}
                     navigation={true}
@@ -86,66 +83,6 @@ export const Picks = () => {
                                     </div>
                                 </div>
                             </Link>
-                            {infoModal && (
-                                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[999]">
-                                    <div className="bg-[#111] text-white rounded-2xl p-6 w-full max-w-lg shadow-xl relative">
-
-                                        <button
-                                            onClick={() => setInfoModal(false)}
-                                            className="absolute top-3 right-3 text-gray-400 hover:text-white"
-                                        >
-                                            ✕
-                                        </button>
-
-                                        <div className="flex gap-4">
-                                            <img
-                                                className="h-[110px] w-[80px] rounded-lg object-cover"
-                                                src={movie.primaryImage}
-                                                alt={movie.primaryTitle}
-                                            />
-
-                                            <div className="flex flex-col">
-                                                <div className="flex items-center gap-1 hover:text-yellow-400 cursor-pointer transition">
-                                                    <h3 className="text-white font-semibold">{movie.primaryTitle}</h3>
-                                                    <ChevronRight size={18} />
-                                                </div>
-
-                                                <p className="text-sm text-gray-400">
-                                                    {movie.releaseDate} · {movie.runtimeMinutes} min · {movie.contentRating} · {movie.type}
-                                                </p>
-
-                                                <h4 className="mt-2 text-xs text-gray-500 font-semibold uppercase">IMDb Rating</h4>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="bg-yellow-400 text-gray-900 font-semibold px-2 py-1 rounded flex items-center">
-                                                        <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none">
-                                                            <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.786 1.4 8.168L12 18.896 4.666 23.164l1.4-8.168L.132 9.21l8.2-1.192L12 .587z" fill="currentColor" />
-                                                        </svg>
-                                                        {movie.averageRating}/10
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <p className="text-gray-300 text-sm mt-5 leading-relaxed">
-                                            A mockumentary on a group of typical office workers, where the workday consists of
-                                            ego clashes, inappropriate behavior, tedium and romance.
-                                        </p>
-
-                                        <div className="text-sm text-gray-400 mt-4">
-                                            Because of your interest in
-                                            <ul className="list-disc list-inside ml-4 mt-1 text-gray-300">
-                                                <li>Better Call Saul</li>
-                                                <li>Game of Thrones</li>
-                                            </ul>
-                                        </div>
-
-                                        <button className="mt-5 bg-blue-600 hover:bg-blue-700 w-full text-white font-medium py-2 rounded-lg">
-                                            + Watchlist
-                                        </button>
-
-                                    </div>
-                                </div>
-                            )}
                         </SwiperSlide>
                     )) : <h2>Movies not found
 

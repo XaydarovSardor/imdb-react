@@ -5,5 +5,8 @@ export { PrimeVideo } from "./PrimeVideo";
 export { Search } from "./Search";
 export { WatchList } from "./WatchList";
 export { Title } from "./Title";
-export {TopRateMovies} from "./TopRateMovies";
-export {SingleMovie} from "./SingleMovie";
+export { TopRateMovies } from "./TopRateMovies";
+export { SingleMovie } from "./SingleMovie";
+export { SinglePerson } from "./SinglePerson"
+export { Genre } from "./Genre";
+export { AllPicks } from "./AllPicks";

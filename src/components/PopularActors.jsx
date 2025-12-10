@@ -23,7 +23,7 @@ export const PopularActors = () => {
     return (
         <div className="text-white py-10 container">
 
-            <Title title={"Most popular celebrities"} color={"white"} />
+            <Title title={"Most popular celebrities"} color={"white"} href={"casts"}/>
             <h3 className="mb-3 uppercase text-yellow mt-3 font-semibold text-xs">Top rising</h3>
             <Swiper slidesPerView={6}
                 spaceBetween={30}

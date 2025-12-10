@@ -5,6 +5,7 @@ export const Home = () => {
     <>
 
       {/* TopRatedMovies */}
+      <TopRateMovies/>
       {/* TopRatedMovies end */}
       {/* popular actors */}
       <PopularActors />

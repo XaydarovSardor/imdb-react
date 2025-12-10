@@ -2,7 +2,7 @@ import { Link, Links } from "react-router-dom"
 import { icons } from "../assets"
 import { Search } from "../components"
 import "./header.css"
-import { X } from "lucide-react"
+import { ChevronDown, ChevronRight, X } from "lucide-react"
 import { useState } from "react"
 export const Header = () => {
   const [openModal, setOpenModal] = useState(false)
@@ -21,10 +21,12 @@ export const Header = () => {
             <Search />
             <Link className="text-white font-semibold text-md">IMDb<span className="text-blue-400">Pro</span></Link>
           </div>
-          <div className="header-right">
+          <div className="header-right flex">
             <button>Watchlist</button>
             <button>Sign in</button>
-            <button>EN</button>
+            <button className="flex items-center">EN
+              <ChevronDown className="w-[20px] h-[10px]"/>
+            </button>
           </div>
         </div>
       </header>

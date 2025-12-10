@@ -1,42 +1,44 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { getSingleMovie } from "../api";
+import { getLikeThis, getSingleMovie } from "../api";
 import { useEffect, useState } from "react";
 import { Title } from "./Title";
 import { User } from "lucide-react";
 
 export const SingleMovie = () => {
     const [movie, setMovie] = useState()
+    const [moreLikeThisMovie, setMoreLikeThisMovie] = useState([])
     const { id } = useParams()
     const navigation = useNavigate()
-    const casts = [{
-        id: 1,
-        image: "/path/to/image.jpg",
-        name: "Kevin Alejandro",
-        character: "Jayce ...",
-        episodes: "17 episodes",
-        years: "2021–2024",
-        episodesLink: "#"
-    },
-    ]
-    console.log("movie id", id);
     useEffect(() => {
         const getSingleMov = async () => {
             try {
                 const res = await getSingleMovie(id)
+                const likeThisFetch = await getLikeThis(id)
+                setMoreLikeThisMovie(likeThisFetch)
                 setMovie(res)
-                console.log(res);
             } catch (error) {
                 console.log(error);
             }
         }
         getSingleMov()
-    }, [])
+    }, [id])
+
     if (!movie) {
         return <h2>Malumotlar topilmadi</h2>
     }
     const backBtn = () => {
         navigation(-1)
     }
+    const formatVotes = (num) => {
+        if (num >= 1_000_000) {
+            return (num / 1_000_000).toFixed(1).replace(".0", "") + " mln"
+        } else if (num >= 1000) {
+            return Math.floor(num / 1000) + "k"
+        } else {
+            return num
+        }
+    }
+
     return (
         <div className="bg-white">
             <div className="bg-[#121212] text-white">
@@ -63,7 +65,7 @@ export const SingleMovie = () => {
 
                     <div className="grid grid-cols-12 gap-2 mt-10">
 
-                        <div className="col-span-3 h-[300px]">
+                        <div className="col-span-3 h-[400px]">
                             <div className="relative h-full">
                                 <img
                                     src={movie.primaryImage}
@@ -75,10 +77,10 @@ export const SingleMovie = () => {
                             </div>
                         </div>
 
-                        <div className="col-span-6 h-[300px]">
-                            <div className="rounded-xl relative overflow-hidden border border-gray-700">
-                                <div className="rounded-xl overflow-hidden border border-gray-700 h-[300px]">
-                                    <img className="w-full h-full" src={movie.thumbnails[0].url} alt="thumbnail" />
+                        <div className="col-span-6 h-[400px]">
+                            <div className="rounded-xl relative h-full overflow-hidden border border-gray-700">
+                                <div className="rounded-xl overflow-hidden border border-gray-700 h-full">
+                                    <img className="w-full h-full" src={movie.thumbnails[1].url} alt="thumbnail" />
                                 </div>
 
                                 <button className="absolute bottom-4 left-6 bg-black/60 px-4 py-2 rounded-full flex items-center gap-2">
@@ -90,8 +92,8 @@ export const SingleMovie = () => {
                             </div>
                         </div>
 
-                        <div className="col-span-3 flex flex-col gap-4 h-[300px]">
-                            <Link className="h-36 bg-[#423D3C] rounded-xl flex items-center justify-center">
+                        <div className="col-span-3 justify-between flex flex-col gap-4 h-[400px]">
+                            <Link className="h-[200px] bg-[#423D3C] rounded-xl flex items-center justify-center">
                                 <div className="text-center">
                                     <svg className="w-8 h-8 mx-auto mb-2" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M5 3v18l15-9L5 3z" />
@@ -100,7 +102,8 @@ export const SingleMovie = () => {
                                 </div>
                             </Link>
 
-                            <Link className="h-36 bg-[#423D3C] rounded-xl flex items-center justify-center">
+
+                            <Link className="h-[200px] bg-[#423D3C] rounded-xl flex items-center justify-center">
                                 <div className="text-center">
                                     <svg className="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
                                         <path d="M3 5h18v14H3z" />
@@ -131,7 +134,7 @@ export const SingleMovie = () => {
                             <div className="flex gap-3 mt-1 flex-wrap">
                                 {movie.directors && (movie.directors.map(director => (
                                     <div key={director.id} className="flex gap-3 mt-1">
-                                        <Link className="text-blue-400 hover:underline">{director.fullName}</Link>
+                                        <Link to={`/director/${director.id}`} className="text-blue-400 hover:underline">{director.fullName}</Link>
                                     </div>
                                 )))}
                             </div>
@@ -142,7 +145,7 @@ export const SingleMovie = () => {
                             <div className="flex gap-3 mt-1 flex-wrap">
                                 {movie.writers && (movie.writers.map(writer => (
                                     <div key={writer.id} className="flex gap-3 mt-1">
-                                        <Link className="text-blue-400 hover:underline">{writer.fullName}</Link>
+                                        <Link to={`/writer/${writer.id}`} className="text-blue-400 hover:underline">{writer.fullName}</Link>
                                     </div>
                                 )))}
                             </div>
@@ -170,9 +173,9 @@ export const SingleMovie = () => {
                         <Title title={"Top Cast"} color={"black"} />
                         <span className="text-gray-600 text-sm font-semibold">{movie.cast.length}</span>
                     </div>
-                    <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-y-6 gap-x-8 items-start">
+                    <div className="grid my-5 grid-cols-1 md:grid-cols-3 gap-y-6 gap-x-8 items-start">
                         {movie.cast.map((c, idx) => (
-                            <div key={idx} className="flex items-center">
+                            <Link key={idx} to={`/acts/${c.id}`} className="flex items-center">
                                 <div className="flex-shrink-0">
                                     {c.primaryImage ? (
                                         <img
@@ -202,9 +205,46 @@ export const SingleMovie = () => {
                                         <span className="text-sm md:text-sm text-gray-400">{c.job}</span>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
+                    <Title title={"User reviews"} color={"black"} href={"/"} />
+                    <div className="flex items-center my-5 gap-3">
+                        <span className="bg-yellow-400 text-black font-semibold rounded-md text-5xl flex items-center">
+                            <svg className="w-14 text-yellow h-8" viewBox="0 0 24 24" fill="none">
+                                <path className="w-14 text-yellow h-8" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.786 1.4 8.168L12 18.896 4.666 23.164l1.4-8.168L.132 9.21l8.2-1.192L12 .587z" fill="currentColor" />
+                            </svg>
+                            {movie.averageRating}
+                        </span>
+                        <span className="text-gray-600 font-semibold text-xl">{formatVotes(movie.numVotes)} votes</span>
+                    </div>
+                    <h2 className="text-black text-2xl font-semibold my-1">Summary</h2>
+                    <p className="text-gray-600 mb-5 font-semibold">{movie.description}</p>
+                    <Title title={"More like this"} color={"black"} href={"/"} />
+                    {moreLikeThisMovie.length > 8 ? (
+                        <div className="grid my-3 grid-cols-4 gap-4">
+                            {moreLikeThisMovie.slice(0, 8).map(movie => (
+                                <Link to={`/${movie.id}`} key={movie.id} className="bg-white shadow p-3 rounded-xl">
+                                    <img
+                                        src={movie?.primaryImage}
+                                        className="w-full h-60 rounded-lg"
+                                    />
+                                    <h3 className="mt-2 font-semibold">{movie.primaryTitle}</h3>
+                                    <div className="flex flex-col gap-1">
+                                        <span className="bg-yellow-400 text-gray-400 font-semibold rounded-md text-sm flex items-center">
+                                            <svg className="w-4 text-yellow h-4" viewBox="0 0 24 24" fill="none">
+                                                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.786 1.4 8.168L12 18.896 4.666 23.164l1.4-8.168L.132 9.21l8.2-1.192L12 .587z" fill="currentColor" />
+                                            </svg>
+                                            {movie.averageRating}/10
+                                        </span>
+                                        <span className="text-gray-400 text-semibold">{movie.releaseDate}</span>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    ) : <h2>More like this movies not found</h2>}
+
+
                 </div>
             </div>
         </div>
